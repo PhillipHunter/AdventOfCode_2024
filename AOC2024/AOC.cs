@@ -11,6 +11,7 @@ namespace AOC2024
         {
             // Add Puzzles Here
             AdventPuzzles.Add(new Day1Part1());
+            AdventPuzzles.Add(new Day1Part2());
 
             return AdventPuzzles.ToArray();
         }

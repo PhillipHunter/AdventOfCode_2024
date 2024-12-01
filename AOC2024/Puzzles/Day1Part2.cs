@@ -3,11 +3,11 @@ using System.Diagnostics;
 
 namespace AOC2024.Puzzles
 {
-    public class Day1Part1 : IAdventPuzzle
+    public class Day1Part2 : IAdventPuzzle
     {
-        public string Name => "Day 1: Historian Hysteria Part 1";
-        public string? Solution => "1873376";
-        public string? ExampleSolution => "11";
+        public string Name => "Day 1: Historian Hysteria Part 2";
+        public string? Solution => "18997088";
+        public string? ExampleSolution => "31";
         public bool ExampleRun { get; set; } = false;
 
         private string _filename = "Day1.txt";
@@ -39,7 +39,11 @@ namespace AOC2024.Puzzles
             leftList.Sort();
             rightList.Sort();
 
-            var diffSum = leftList.Select((leftVal, i) => Math.Abs(leftVal - rightList[i])).Sum();
+            var rightListCounts = GetListCounts(rightList);
+
+            var diffSum = leftList
+                .Select((leftVal, i) => leftVal * rightListCounts.GetValueOrDefault(leftVal))
+                .Sum();
 
             #endregion Puzzle
 
@@ -54,7 +58,7 @@ namespace AOC2024.Puzzles
             return puzzleOutput;
         }
 
-        public void GetListSplit(
+        public static void GetListSplit(
             string[] textLines,
             out List<int> leftList,
             out List<int> rightList
@@ -69,6 +73,20 @@ namespace AOC2024.Puzzles
                 leftList.Add(int.Parse(lineSplit.First()));
                 rightList.Add(int.Parse(lineSplit.Last()));
             }
+        }
+
+        public static Dictionary<int, int> GetListCounts(List<int> list)
+        {
+            var result = new Dictionary<int, int>();
+            foreach (var currLine in list)
+            {
+                if (!result.TryAdd(currLine, 1))
+                {
+                    result[currLine]++;
+                }
+            }
+
+            return result;
         }
     }
 }
