@@ -6,6 +6,9 @@
 
         public string? Solution { get; }
 
+        public bool ExampleRun { get; set; }
+        public string? ExampleSolution { get; }
+
         public PuzzleOutput GetOutput();
     }
 }
