@@ -10,7 +10,7 @@ namespace AOC2024.Puzzles
 {
     public class Day5Part1 : IAdventPuzzle
     {
-        public string Name => "Day 4: Print Queue Part 1";
+        public string Name => "Day 5: Print Queue Part 1";
         public string? Solution => "5129";
         public string? ExampleSolution => "143";
         public bool ExampleRun { get; set; } = false;
