@@ -97,9 +97,6 @@ namespace AOC2024.Puzzles
 
             foreach (Match mulMatch in mulMatches)
             {
-                if (!mulMatch.Success)
-                    continue;
-
                 if (GetApplicableCommand(commandPositions, mulMatch.Index) == false)
                     continue;
 
