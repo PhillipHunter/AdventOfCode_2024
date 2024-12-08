@@ -121,156 +121,88 @@ namespace AOC2024.Puzzles
             }
         }
 
-        public static bool LToRHorz(string[] inputLines, int row, int col, string target)
+        private static bool CheckLettersInDir(
+            string[] inputLines,
+            int row,
+            int col,
+            string target,
+            Point targetDir
+        )
         {
-            try
+            var validChars = 0;
+            for (var i = 0; i < target.Length; i++)
             {
-                var validChars = target.Where((t, i) => inputLines[row][col + i] == t).Count();
+                var selectPoint = new Point(col + (i * targetDir.X), row + (i * targetDir.Y));
 
-                if (validChars == target.Length)
+                if (!InBounds(inputLines, selectPoint))
+                    return false;
+
+                if (inputLines[selectPoint.Y][selectPoint.X] == target[i])
                 {
-                    return true;
+                    validChars++;
                 }
             }
-            catch (IndexOutOfRangeException e)
-            {
-                return false; // Out of bounds
-            }
 
-            return false;
+            return (validChars == target.Length);
+        }
+
+        public static bool LToRHorz(string[] inputLines, int row, int col, string target)
+        {
+            var targetDir = new Point(1, 0);
+            return CheckLettersInDir(inputLines, row, col, target, targetDir);
         }
 
         public static bool RToLHorz(string[] inputLines, int row, int col, string target)
         {
-            try
-            {
-                var validChars = target.Where((t, i) => inputLines[row][col - i] == t).Count();
-
-                if (validChars == target.Length)
-                {
-                    return true;
-                }
-            }
-            catch (IndexOutOfRangeException e)
-            {
-                return false; // Out of bounds
-            }
-
-            return false;
+            var targetDir = new Point(-1, 0);
+            return CheckLettersInDir(inputLines, row, col, target, targetDir);
         }
 
         public static bool TToBVert(string[] inputLines, int row, int col, string target)
         {
-            try
-            {
-                var validChars = target.Where((t, i) => inputLines[row + i][col] == t).Count();
-
-                if (validChars == target.Length)
-                {
-                    return true;
-                }
-            }
-            catch (IndexOutOfRangeException e)
-            {
-                return false; // Out of bounds
-            }
-
-            return false;
+            var targetDir = new Point(0, 1);
+            return CheckLettersInDir(inputLines, row, col, target, targetDir);
         }
 
         public static bool BToTVert(string[] inputLines, int row, int col, string target)
         {
-            try
-            {
-                var validChars = target.Where((t, i) => inputLines[row - i][col] == t).Count();
-
-                if (validChars == target.Length)
-                {
-                    return true;
-                }
-            }
-            catch (IndexOutOfRangeException e)
-            {
-                return false; // Out of bounds
-            }
-
-            return false;
+            var targetDir = new Point(0, -1);
+            return CheckLettersInDir(inputLines, row, col, target, targetDir);
         }
 
         public static bool TLToBRDiag(string[] inputLines, int row, int col, string target)
         {
-            try
-            {
-                var validChars = target.Where((t, i) => inputLines[row + i][col + i] == t).Count();
-
-                if (validChars == target.Length)
-                {
-                    return true;
-                }
-            }
-            catch (IndexOutOfRangeException e)
-            {
-                return false; // Out of bounds
-            }
-
-            return false;
+            var targetDir = new Point(1, 1);
+            return CheckLettersInDir(inputLines, row, col, target, targetDir);
         }
 
         public static bool TRToBLDiag(string[] inputLines, int row, int col, string target)
         {
-            try
-            {
-                var validChars = target.Where((t, i) => inputLines[row + i][col - i] == t).Count();
-
-                if (validChars == target.Length)
-                {
-                    return true;
-                }
-            }
-            catch (IndexOutOfRangeException e)
-            {
-                return false; // Out of bounds
-            }
-
-            return false;
+            var targetDir = new Point(-1, 1);
+            return CheckLettersInDir(inputLines, row, col, target, targetDir);
         }
 
         public static bool BLToTRDiag(string[] inputLines, int row, int col, string target)
         {
-            try
-            {
-                var validChars = target.Where((t, i) => inputLines[row - i][col + i] == t).Count();
-
-                if (validChars == target.Length)
-                {
-                    return true;
-                }
-            }
-            catch (IndexOutOfRangeException e)
-            {
-                return false; // Out of bounds
-            }
-
-            return false;
+            var targetDir = new Point(1, -1);
+            return CheckLettersInDir(inputLines, row, col, target, targetDir);
         }
 
         public static bool BRToTLDiag(string[] inputLines, int row, int col, string target)
         {
-            try
-            {
-                var validChars = target.Where((t, i) => inputLines[row - i][col - i] == t).Count();
+            var targetDir = new Point(-1, -1);
+            return CheckLettersInDir(inputLines, row, col, target, targetDir);
+        }
 
-                if (validChars == target.Length)
-                {
-                    return true;
-                }
-            }
-            catch (IndexOutOfRangeException e)
-            {
-                return false; // Out of bounds
-            }
+        public static bool InBounds(string[] inputLines, Point point)
+        {
+            var mapHeight = inputLines.Length;
+            var mapWidth = inputLines[0].Length;
 
-            return false;
+            return (point.Y <= mapHeight - 1)
+                && (point.X <= mapWidth - 1)
+                && (point.Y >= 0)
+                && (point.X >= 0);
         }
     }
 }
