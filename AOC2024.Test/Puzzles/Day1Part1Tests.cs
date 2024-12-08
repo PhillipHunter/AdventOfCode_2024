@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using AOC2024.Puzzles;
 
@@ -11,29 +12,21 @@ namespace AOC2024.Tests.Puzzles
     public class Day1Part1Tests
     {
         [Fact]
+        public void NameField_WhenCalled_ReturnsProperFormat()
+        {
+            CommonTests.ValidateNameField<Day1Part1>();
+        }
+
+        [Fact]
         public void GetOutput_WhenCalledWithExample_ReturnsExampleAnswer()
         {
-            // Arrange
-            var sut = new Day1Part1 { ExampleRun = true };
-
-            // Act
-            var output = sut.GetOutput();
-
-            // Assert
-            Assert.Equal(sut.ExampleSolution, output.Result);
+            CommonTests.ValidateOutput<Day1Part1>(true);
         }
 
         [Fact]
         public void GetOutput_WhenCalledWithoutExample_ReturnsAnswer()
         {
-            // Arrange
-            var sut = new Day1Part1();
-
-            // Act
-            var output = sut.GetOutput();
-
-            // Assert
-            Assert.Equal(sut.Solution, output.Result);
+            CommonTests.ValidateOutput<Day1Part1>(false);
         }
 
         [Fact]

@@ -11,29 +11,21 @@ namespace AOC2024.Tests.Puzzles
     public class Day5Part1Tests
     {
         [Fact]
+        public void NameField_WhenCalled_ReturnsProperFormat()
+        {
+            CommonTests.ValidateNameField<Day5Part1>();
+        }
+
+        [Fact]
         public void GetOutput_WhenCalledWithExample_ReturnsExampleAnswer()
         {
-            // Arrange
-            var sut = new Day5Part1 { ExampleRun = true };
-
-            // Act
-            var output = sut.GetOutput();
-
-            // Assert
-            Assert.Equal(sut.ExampleSolution, output.Result);
+            CommonTests.ValidateOutput<Day5Part1>(true);
         }
 
         [Fact]
         public void GetOutput_WhenCalledWithoutExample_ReturnsAnswer()
         {
-            // Arrange
-            var sut = new Day5Part1();
-
-            // Act
-            var output = sut.GetOutput();
-
-            // Assert
-            Assert.Equal(sut.Solution, output.Result);
+            CommonTests.ValidateOutput<Day5Part1>(false);
         }
 
         [Fact]

@@ -24,29 +24,21 @@ namespace AOC2024.Tests.Puzzles
         }
 
         [Fact]
+        public void NameField_WhenCalled_ReturnsProperFormat()
+        {
+            CommonTests.ValidateNameField<Day8Part1>();
+        }
+
+        [Fact]
         public void GetOutput_WhenCalledWithExample_ReturnsExampleAnswer()
         {
-            // Arrange
-            var sut = new Day8Part1 { ExampleRun = true };
-
-            // Act
-            var output = sut.GetOutput();
-
-            // Assert
-            Assert.Equal(sut.ExampleSolution, output.Result);
+            CommonTests.ValidateOutput<Day8Part1>(true);
         }
 
         [Fact]
         public void GetOutput_WhenCalledWithoutExample_ReturnsAnswer()
         {
-            // Arrange
-            var sut = new Day8Part1();
-
-            // Act
-            var output = sut.GetOutput();
-
-            // Assert
-            Assert.Equal(sut.Solution, output.Result);
+            CommonTests.ValidateOutput<Day8Part1>(false);
         }
 
         [Fact]
