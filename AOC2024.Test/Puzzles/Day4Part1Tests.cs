@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -159,6 +160,36 @@ namespace AOC2024.Tests.Puzzles
             // Act
             var result = Day4Part1.BRToTLDiag(inputLines, row, col, target);
             Assert.Equal(expected, result);
+        }
+
+        [Fact]
+        public void InBounds_WhenCalledInBounds_ReturnsTrue()
+        {
+            // Arrange
+            var map = new[] { "....", "....", "....", "....", "...." };
+
+            var inBoundsPoint = new Point(3, 0);
+
+            // Act
+            var result = Day4Part1.InBounds(map, inBoundsPoint);
+
+            // Assert
+            Assert.True(result);
+        }
+
+        [Fact]
+        public void InBounds_WhenCalledOutOfBounds_ReturnsFalse()
+        {
+            // Arrange
+            var map = new[] { "....", "....", "....", "....", "...." };
+
+            var inBoundsPoint = new Point(4, 4);
+
+            // Act
+            var result = Day4Part1.InBounds(map, inBoundsPoint);
+
+            // Assert
+            Assert.False(result);
         }
     }
 }
