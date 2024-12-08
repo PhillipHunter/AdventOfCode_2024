@@ -61,9 +61,6 @@ namespace AOC2024.Puzzles
 
             foreach (Match mulMatch in mulMatches)
             {
-                if (!mulMatch.Success)
-                    continue;
-
                 var mul1 = int.Parse(mulMatch.Groups[1].Value);
                 var mul2 = int.Parse(mulMatch.Groups[2].Value);
 
