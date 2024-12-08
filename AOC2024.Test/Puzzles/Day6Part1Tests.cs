@@ -170,5 +170,49 @@ namespace AOC2024.Tests.Puzzles
             // Assert
             Assert.Null(result);
         }
+
+        [Fact]
+        public void InBounds_WhenCalledInBounds_ReturnsTrue()
+        {
+            // Arrange
+            var map = new List<char[]>()
+            {
+                new[] { '.', '.', '.', '.' },
+                new[] { '.', '.', '.', '.' },
+                new[] { '.', '.', '#', '.' },
+                new[] { '.', '.', '^', '.' },
+                new[] { '.', '.', '.', '.' },
+            };
+
+            var inBoundsPoint = new Point(3, 0);
+
+            // Act
+            var result = Day6Part1.InBounds(map, inBoundsPoint);
+
+            // Assert
+            Assert.True(result);
+        }
+
+        [Fact]
+        public void InBounds_WhenCalledOutOfBounds_ReturnsFalse()
+        {
+            // Arrange
+            var map = new List<char[]>()
+            {
+                new[] { '.', '.', '.', '.' },
+                new[] { '.', '.', '.', '.' },
+                new[] { '.', '.', '#', '.' },
+                new[] { '.', '.', '^', '.' },
+                new[] { '.', '.', '.', '.' },
+            };
+
+            var inBoundsPoint = new Point(4, 4);
+
+            // Act
+            var result = Day6Part1.InBounds(map, inBoundsPoint);
+
+            // Assert
+            Assert.False(result);
+        }
     }
 }

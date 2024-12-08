@@ -80,20 +80,10 @@ namespace AOC2024.Puzzles
 
         public static char? GetCharAt(List<char[]> map, Point point)
         {
-            try
-            {
-                return map[point.Y][point.X];
-            }
-            catch (IndexOutOfRangeException ex)
-            {
-                // Out of bounds
+            if (!InBounds(map, point))
                 return null;
-            }
-            catch (ArgumentOutOfRangeException ex)
-            {
-                // Out of bounds
-                return null;
-            }
+
+            return map[point.Y][point.X];
         }
 
         public static Point GetStartingPos(List<char[]> map)
@@ -129,20 +119,8 @@ namespace AOC2024.Puzzles
                     break;
             }
 
-            try
-            {
-                var boundsTest = map[nextPos.Y][nextPos.X];
-            }
-            catch (IndexOutOfRangeException ex)
-            {
-                // Out of bounds
+            if (!InBounds(map, nextPos))
                 return null;
-            }
-            catch (ArgumentOutOfRangeException ex)
-            {
-                // Out of bounds
-                return null;
-            }
 
             return nextPos;
         }
@@ -183,6 +161,17 @@ namespace AOC2024.Puzzles
             }
 
             throw new ApplicationException("Invalid direction");
+        }
+
+        public static bool InBounds(List<char[]> map, Point point)
+        {
+            var mapHeight = map.Count;
+            var mapWidth = map[0].Length;
+
+            return (point.Y <= mapHeight - 1)
+                && (point.X <= mapWidth - 1)
+                && (point.Y >= 0)
+                && (point.X >= 0);
         }
 
         public enum Day6Part1Direction
