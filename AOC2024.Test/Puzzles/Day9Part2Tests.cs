@@ -26,6 +26,7 @@ namespace AOC2024.Tests.Puzzles
             CommonTests.ValidateOutput<Day9Part2>(true);
         }
 
+        // TODO: Re-enable after optimizations
         //[Fact]
         //public void GetOutput_WhenCalledWithoutExample_ReturnsAnswer()
         //{

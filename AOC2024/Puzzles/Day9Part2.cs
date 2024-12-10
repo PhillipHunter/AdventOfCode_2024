@@ -89,26 +89,13 @@ namespace AOC2024.Puzzles
         public static long CalculateChecksum(List<int?> defraggedFileBlocks)
         {
             long sum = 0;
-
-            Parallel.For(
-                0,
-                defraggedFileBlocks.Count,
-                () => 0L,
-                (i, loopState, localSum) =>
+            for (var i = 0; i < defraggedFileBlocks.Count; i++)
+            {
+                if (defraggedFileBlocks[i] != null)
                 {
-                    if (defraggedFileBlocks[i] != null)
-                        localSum += (long)(i * defraggedFileBlocks[i]);
-
-                    return localSum;
-                },
-                localSum =>
-                {
-                    lock (defraggedFileBlocks)
-                    {
-                        sum += localSum;
-                    }
+                    sum += (long)(i * defraggedFileBlocks[i]);
                 }
-            );
+            }
 
             return sum;
         }
@@ -117,16 +104,6 @@ namespace AOC2024.Puzzles
         {
             var result = new List<int?>(fileBlocks);
 
-            // Pre-calculate counts
-            var counts = new Dictionary<int, int>();
-            foreach (var fileBlock in fileBlocks.Where(b => b != null))
-            {
-                if (!counts.TryAdd(fileBlock.Value, 1))
-                {
-                    counts[fileBlock.Value]++;
-                }
-            }
-
             var seen = new HashSet<int>();
 
             for (var blockIndex = result.Count - 1; blockIndex >= 0; blockIndex--)
@@ -134,18 +111,18 @@ namespace AOC2024.Puzzles
                 if (result[blockIndex] == null) // Skip if empty space
                     continue;
 
-                var fileId = result[blockIndex].Value;
-                var fileBlockLength = counts[fileId];
+                var fileId = result[blockIndex];
+                var fileBlockLength = result.Count(i => i == result[blockIndex]); // Inefficient way to do this
                 var firstNullIndex = GetFirstEmptyBlockIndexOfProperLength(result, fileBlockLength);
 
                 var firstIndexOfFile = result.FindIndex(x => x == fileId);
 
-                if (seen.Contains(fileId))
+                if (seen.Contains(fileId.Value))
                 {
                     continue;
                 }
 
-                seen.Add(fileId);
+                seen.Add(fileId.Value);
 
                 if (firstNullIndex.HasValue)
                 {
@@ -165,9 +142,16 @@ namespace AOC2024.Puzzles
                     )
                     {
                         result[i] = fileId;
+                        //AOC.Log($"result at {i} to {fileId}");
                     }
                 }
+
+                //AOC.Log(
+                //    $"fid: {fileId} - fni: {firstNullIndex} - {JsonConvert.SerializeObject(result)}"
+                //);
             }
+
+            //AOC.Log($"F - {JsonConvert.SerializeObject(result)}");
 
             return result;
         }
@@ -177,19 +161,20 @@ namespace AOC2024.Puzzles
             int neededLength
         )
         {
+            var nullFlag = false;
             var nullCount = 0;
-            int? nullStartIndex = null;
-
+            var nullStartIndex = 0;
             for (var fileBlockIndex = 0; fileBlockIndex < fileBlocks.Count; fileBlockIndex++)
             {
                 if (fileBlocks[fileBlockIndex] == null)
                 {
-                    if (nullStartIndex == null)
+                    if (!nullFlag)
                     {
+                        nullFlag = true;
                         nullStartIndex = fileBlockIndex;
-                        nullCount++;
                     }
-                    else
+
+                    if (nullFlag)
                     {
                         nullCount++;
 
@@ -201,7 +186,7 @@ namespace AOC2024.Puzzles
                 }
                 else
                 {
-                    nullStartIndex = null;
+                    nullFlag = false;
                     nullCount = 0;
                 }
             }
