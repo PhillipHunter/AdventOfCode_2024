@@ -117,6 +117,8 @@ namespace AOC2024.Puzzles
         {
             var result = new List<int?>(fileBlocks);
 
+            var emptyBlocks = GetEmptyBlocks(fileBlocks);
+
             // Pre-calculate counts
             var counts = new Dictionary<int, int>();
             foreach (var fileBlock in fileBlocks.Where(b => b != null))
@@ -136,7 +138,7 @@ namespace AOC2024.Puzzles
 
                 var fileId = result[blockIndex].Value;
                 var fileBlockLength = counts[fileId];
-                var firstNullIndex = GetFirstEmptyBlockIndexOfProperLength(result, fileBlockLength);
+                //var firstNullIndex = GetFirstEmptyBlockIndexOfProperLength(result, fileBlockLength);
 
                 var firstIndexOfFile = result.FindIndex(x => x == fileId);
 
@@ -147,8 +149,25 @@ namespace AOC2024.Puzzles
 
                 seen.Add(fileId);
 
+                var firstEmptyBlockIndex = emptyBlocks.FindIndex(b => b.length >= fileBlockLength);
+                int? firstNullIndex =
+                    (firstEmptyBlockIndex == -1) ? null : emptyBlocks[firstEmptyBlockIndex].pos;
+
                 if (firstNullIndex.HasValue)
                 {
+                    var posDiff = emptyBlocks[firstEmptyBlockIndex].length - fileBlockLength;
+                    if (posDiff > 0)
+                    {
+                        emptyBlocks[firstEmptyBlockIndex] = (
+                            firstEmptyBlockIndex + fileBlockLength,
+                            posDiff
+                        );
+                    }
+                    else
+                    {
+                        emptyBlocks.RemoveAt(firstEmptyBlockIndex);
+                    }
+
                     if (firstNullIndex.Value > firstIndexOfFile)
                         continue;
 
@@ -166,6 +185,36 @@ namespace AOC2024.Puzzles
                     {
                         result[i] = fileId;
                     }
+                }
+            }
+
+            return result;
+        }
+
+        public static List<(int pos, int length)>? GetEmptyBlocks(List<int?> fileBlocks)
+        {
+            var result = new List<(int, int)>();
+            var nullCount = 0;
+            int? nullStartIndex = null;
+
+            for (var fileBlockIndex = 0; fileBlockIndex < fileBlocks.Count; fileBlockIndex++)
+            {
+                if (fileBlocks[fileBlockIndex] == null)
+                {
+                    if (nullStartIndex == null)
+                    {
+                        nullStartIndex = fileBlockIndex;
+                    }
+
+                    nullCount++;
+                }
+                else
+                {
+                    if (nullStartIndex != null)
+                        result.Add((nullStartIndex.Value, nullCount));
+
+                    nullStartIndex = null;
+                    nullCount = 0;
                 }
             }
 
